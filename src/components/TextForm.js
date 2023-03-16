@@ -1,6 +1,22 @@
 import React, {useState} from 'react'
+import { useCookies } from 'react-cookie';
 
 export default function TextForm(props) {
+    const [text, setText] = useState('Default text here');
+    const [cookies, setCookies] = useCookies(['light']);
+    if (cookies.mode==='dark') {
+        document.getElementsByTagName("html")[0].classList.add("dark", "bg-slate-900");
+    }
+    const mode = (event) => {
+        if (event.target.classList.contains('lightmode')) {
+            document.getElementsByTagName("html")[0].classList.add("dark", "bg-slate-900");
+            setCookies("mode", "dark", {path: "/"});
+        } else {
+            document.getElementsByTagName("html")[0].classList.remove("dark", "bg-slate-900");
+            setCookies("mode", "light", {path: "/"});
+        }
+    }
+
     const toUpperCase = () => {
         let newText = text.toUpperCase();
         setText(newText);
@@ -71,16 +87,8 @@ export default function TextForm(props) {
     const handleOnChange = (event) => {
         setText(event.target.value);
     }
-    const mode = (event) => {
-        if (event.target.classList.contains('lightmode')) {
-            document.getElementsByTagName("html")[0].classList.add("dark", "bg-slate-900");
-        } else {
-            document.getElementsByTagName("html")[0].classList.remove("dark", "bg-slate-900");
-        }
-    }
 
-    const [text, setText] = useState('Default text here');
-    let wordCount = text.split(" ").length - 1,
+    let wordCount = text.split(" ").length,
         characterCount = text.length,
         lineCount = text.split("\n").length,
         readTime = (((0.008 * text.length).toFixed(2)).split(".").join("")),
@@ -89,7 +97,7 @@ export default function TextForm(props) {
 
     return (
         <div className='container mx-auto my-20 px-4'>
-            <div className='block mb-4'>
+            <div className='mb-6 grid justify-end'>
                 <p className='lightmode modeswitch flex items-center gap-x-2 dark:hidden text-slate-900 cursor-pointer w-fit' onClick={mode}>
                     <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
                         <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" className="stroke-slate-400 dark:stroke-slate-500"></path>
@@ -108,7 +116,7 @@ export default function TextForm(props) {
             <div className="my-6">
                 <textarea className="border border-indigo-600 dark:border-gray-400 dark:bg-slate-700 dark:text-white w-full resize-none p-4 rounded outline-none" value={text} onChange={handleOnChange} name="analyze" id="analyzeArea" rows="10"></textarea>
                 <p className='text-sm text-gray-600 dark:text-white flex flex-wrap justify-between'>
-                    <span>Word Count: {wordCount} | Character Count: {characterCount} | Line Count: {lineCount}</span>
+                    <span>Word Count: {characterCount===0?wordCount-1:wordCount} | Character Count: {characterCount} | Line Count: {lineCount}</span>
                     <span>{readMinutes} Minutes and {readSeconds} Seconds read</span>
                 </p>
             </div>
