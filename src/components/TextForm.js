@@ -1,3 +1,4 @@
+import { Alert } from 'flowbite-react';
 import React, {useState} from 'react'
 import { useCookies } from 'react-cookie';
 
@@ -97,6 +98,7 @@ export default function TextForm(props) {
 
     return (
         <div className='container mx-auto my-20 px-4'>
+            <Alert color="success" rounded={false} withBorderAccent={true} additionalContent={"test this"} />
             <div className='mb-6 grid justify-end'>
                 <p className='lightmode modeswitch flex items-center gap-x-2 dark:hidden text-slate-900 cursor-pointer w-fit' onClick={mode}>
                     <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">

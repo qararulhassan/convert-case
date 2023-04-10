@@ -7,6 +7,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}"
+  ],
   darkMode: "class"
 }
